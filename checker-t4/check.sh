@@ -1,0 +1,54 @@
+#!/bin/bash
+
+#make clean
+#make build
+
+mkdir output &> /dev/null
+
+no_tests=11
+
+rm -rf "date.in"
+rm -rf "date.out"
+
+re='^[0-9]+$'
+if [[ "$1" =~ $re ]] ; then
+	no_tests=1
+fi
+
+grade=0
+for i in $(seq 1 $(($no_tests))); do
+	if [[ "$1" =~ $re ]] ; then
+		i=$1
+	fi
+
+	cp "tema4-teste/test"$i".in" "date.in"
+	
+	time ./tema4 > /dev/null
+	if [ "$1" == "--leaks" ] || [ "$2" == "--leaks" ]; then
+		time valgrind -q --leak-check=full --log-file=a.out ./tema4 > /dev/null
+	fi
+	
+	cp "date.out" "output/test"$i".out"
+
+	if [[ -z $(diff "output/test"$i".out" "tema4-teste/test"$i".ok") ]]; then 
+		grade=$(($grade+1));
+		echo ""
+		
+		
+		if [ "$1" == "--leaks" ] && [[ -z $(cat a.out) ]]; then
+			echo "test"$i"............. PASS (with leaks)"
+		else
+			echo "test"$i"............. PASS"
+		fi
+		
+		rm -rf a.out
+	else
+		echo ""
+		echo "test"$i"............. FAIL"
+		diff "output/test"$i".out" "tema4-teste/test"$i".ok"
+	fi
+done
+
+echo ""
+echo "GRADE.................................$((grade))/$((no_tests))";
+

@@ -1,0 +1,43 @@
+Boboc Diana-Andreea 312CA
+
+Pentru rezolvarea problemei am folosit structurile de date trie si treap in felul 
+urmator:
+    Trie-ul este un arbore in care fiecare nod are 10 fii care reprezinta tastele
+     de la 2 la 9 (facand abstractie de nodurile 0 si 1 care raman necompletate 
+     indiferent de cod).Astfel, o insiruire de tipul radacina-nod 2-nod 3-nod 4 
+     va reprezenta codul 234.
+    Fiecare nod are alocat si treap-ul corespunzator codului ce se formeaza 
+    parcurgand drumul radacina-...-nodul curent si de asemenea o variabila booleana 
+    nil ce ne ajuta sa verificam daca nodul respectiv reprezinta un cod(caz in 
+    care nil este false) sau este doar parte din alt cod (caz in care nil este true).
+    Treap-ul corespunzator fiecarui cod retine toate combinatiile posibile de 
+    texte ce au la baza acel cod.Aceste combinatii sunt inserate in treap pe baza
+     unei prioritati random (respectand astfel principiul de heap),dar si crescator 
+     de la stanga la dreapta in ceea ce priveste numarul de aparitii,iar pentru 
+     numar de aparitii egal,cheile vor fi inserate lexicografic de la dreapta la 
+     stanga (respectand principiul de bst).Astfel,in partea dreapta a treapului 
+     se vor gasi textele care au numarul de aparitie cel mai mare si sunt cel mai 
+     mici lexicografic din textele cu acelasi numar de aparitie.
+    Fiecare cheie a treap-ului va fi reprezentata de o structura cu campurile 
+    text si numarul de aparitii al textului.
+    
+    Fiecarui text citit din fisierul de intrare i se calculeaza codul cu ajutorul 
+    functiei identify.Se verifica daca acest cod este existent in trie cu ajutorul 
+    functiei lokkup (=>avem treap asignat),iar in caz afirmativ se insereaza in 
+    treap-ul corespunzator noul text si numarul lui de aparitii.In caz negativ, 
+    se aloca memorie pentru noul cod (=>se aloca fii nodului reprezentant al codului 
+    si treap-ul asociat codului) si se insereaza textul si numarul de aparitii in 
+    noul treap.
+
+    Pentru fiecare cod citit din fisier se retine in variabila k numarul de aparitii 
+    al textului cautat pe baza input-ului si al numarului de noduri existent in 
+    treap-ul asociat codului.
+    Se cauta in treap textul cu numarul de aparitii k cu ajutorul functiei findp() 
+    pe baza numarul de noduri existente in subarborii treap-ului,incepand cautarea 
+    de pe partea dreapta catre partea stanga.
+    Se sterge din treap cheia returnata de functia findp(),i se incrementeaza 
+    numarul de aparitii si se reinsereaza in treap.
+    
+    La final se elibereaza memoria trie-ului,eliberand in acelasi timp si memoria 
+    pentru fiecare treap alocat nodurilor reprezentate ale codurilor date ca input.
+    
